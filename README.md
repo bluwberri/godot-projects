@@ -1,4 +1,2 @@
 # godot-projects
-to put all my projects here
-
- i plan on using this place for my portofolio
+you will need to install godot to use these folders
