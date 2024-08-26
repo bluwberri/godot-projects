@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3 uid="uid://do2v6yoqm5img"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_0j3xs"]
+[ext_resource type="Texture2D" uid="uid://dkhbxadr0k6do" path="res://Visuals/player sprite.png" id="2_vnpqi"]
+[ext_resource type="Script" path="res://Scripts/health_component.gd" id="4_5gqq0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2gla0"]
+atlas = ExtResource("2_vnpqi")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2767r"]
+atlas = ExtResource("2_vnpqi")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hphak"]
+atlas = ExtResource("2_vnpqi")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6m52p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2gla0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2767r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hphak")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_o0lqx"]
+script/source = "extends AnimatedSprite2D
+@onready var player = $\"..\"
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if player.hurt:
+		shake(-20,20)
+	
+func shake(min_shake,max_shake):
+	var random = RandomNumberGenerator
+	position = Vector2(randi_range(min_shake,max_shake),randi_range(min_shake,max_shake))
+	position = Vector2(0,0)
+"
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("healthcomponent")]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_0j3xs")
+healthcomponent = NodePath("HealthComponent")
+
+[node name="visual" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_6m52p")
+script = SubResource("GDScript_o0lqx")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("4_5gqq0")
+max_health = 3.0
+health = 3.0
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="collision" type="CollisionPolygon2D" parent="Hitbox"]
+position = Vector2(0, 2)
+polygon = PackedVector2Array(0, -68, 66, 63, 0, 47, -66, 63)
+
+[connection signal="death" from="HealthComponent" to="." method="_on_health_component_death"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

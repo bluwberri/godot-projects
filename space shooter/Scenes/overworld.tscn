@@ -1,0 +1,197 @@
+[gd_scene load_steps=18 format=3 uid="uid://xlaruk4cua5v"]
+
+[ext_resource type="Script" path="res://Scenes/overworld.gd" id="1_4fuwh"]
+[ext_resource type="PackedScene" uid="uid://do2v6yoqm5img" path="res://Scenes/player.tscn" id="1_byufa"]
+[ext_resource type="Texture2D" uid="uid://d3f5cnetp77qi" path="res://Visuals/icon.svg" id="2_52skd"]
+[ext_resource type="Texture2D" uid="uid://dnyoykyvnn0l0" path="res://Visuals/layer 3 2.0.png" id="4_5qvr4"]
+[ext_resource type="Script" path="res://Scripts/obstacle.gd" id="4_10a8h"]
+[ext_resource type="Texture2D" uid="uid://cka53xop7w616" path="res://Visuals/layer 2 2.0.png" id="5_lxxec"]
+[ext_resource type="Texture2D" uid="uid://diuk1enbhv513" path="res://Visuals/layer 1 2.0.png" id="6_111hu"]
+[ext_resource type="PackedScene" uid="uid://bayl5t56f1ph" path="res://Scenes/obstacle.tscn" id="7_ddoa5"]
+[ext_resource type="Script" path="res://Scripts/healthbar.gd" id="9_x1lc0"]
+[ext_resource type="Script" path="res://Scripts/score.gd" id="10_rlsyq"]
+[ext_resource type="Script" path="res://Scripts/Continue.gd" id="11_fx3ip"]
+[ext_resource type="Script" path="res://Scripts/PauseMenu.gd" id="11_qs623"]
+[ext_resource type="Script" path="res://Scripts/Quit.gd" id="12_2w557"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1soki"]
+radius = 64.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qnof"]
+bg_color = Color(0, 0, 0, 0.65098)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_om1hi"]
+bg_color = Color(0, 0, 0, 0.45098)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lp7ul"]
+bg_color = Color(0, 0, 0, 0.854902)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[node name="Overworld" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_4fuwh")
+
+[node name="Player" parent="." instance=ExtResource("1_byufa")]
+process_mode = 1
+position = Vector2(174, 647)
+
+[node name="obstacle" parent="." instance=ExtResource("7_ddoa5")]
+process_mode = 1
+script = ExtResource("4_10a8h")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 1
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+process_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.061965, 0.0631164, 0.206279, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Area2D" type="Area2D" parent="."]
+process_mode = 1
+visible = false
+position = Vector2(201, 288)
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = ExtResource("2_52skd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_1soki")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+process_mode = 1
+layer = -1
+scroll_ignore_camera_zoom = true
+
+[node name="Farthest" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(0, 720)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Farthest"]
+texture = ExtResource("4_5qvr4")
+centered = false
+
+[node name="Middle" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.6, 0.6)
+motion_mirroring = Vector2(0, 720)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Middle"]
+texture = ExtResource("5_lxxec")
+centered = false
+
+[node name="Closest" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.9, 0.9)
+motion_mirroring = Vector2(0, 720)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Closest"]
+texture = ExtResource("6_111hu")
+centered = false
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+process_mode = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer2"]
+process_mode = 1
+offset_left = 84.0
+offset_top = 21.0
+offset_right = 306.0
+offset_bottom = 48.0
+max_value = 3.0
+rounded = true
+script = ExtResource("9_x1lc0")
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer2"]
+process_mode = 1
+offset_left = 133.0
+offset_top = 49.0
+offset_right = 354.0
+offset_bottom = 89.0
+text = "whatever hahah"
+script = ExtResource("10_rlsyq")
+metadata/_edit_use_anchors_ = true
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+script = ExtResource("11_qs623")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.415686)
+
+[node name="Continue" type="Button" parent="PauseMenu"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -103.5
+offset_top = 180.0
+offset_right = 103.5
+offset_bottom = 266.0
+grow_horizontal = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_0qnof")
+theme_override_styles/hover = SubResource("StyleBoxFlat_om1hi")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lp7ul")
+text = "Continue
+"
+script = ExtResource("11_fx3ip")
+
+[node name="Quit" type="Button" parent="PauseMenu"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -103.5
+offset_top = 360.0
+offset_right = 103.5
+offset_bottom = 446.0
+grow_horizontal = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_0qnof")
+theme_override_styles/hover = SubResource("StyleBoxFlat_om1hi")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lp7ul")
+text = "Quit
+"
+script = ExtResource("12_2w557")
+
+[connection signal="pressed" from="PauseMenu/Continue" to="PauseMenu/Continue" method="_on_pressed"]
+[connection signal="pressed" from="PauseMenu/Quit" to="PauseMenu/Quit" method="_on_pressed"]

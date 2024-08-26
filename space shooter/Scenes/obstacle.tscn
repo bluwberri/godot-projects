@@ -1,0 +1,27 @@
+[gd_scene load_steps=8 format=3 uid="uid://bayl5t56f1ph"]
+
+[ext_resource type="Script" path="res://Scripts/asteroid.gd" id="1_5ysnw"]
+[ext_resource type="Texture2D" uid="uid://4ln3yrjarurx" path="res://Visuals/asteroid1.png" id="2_t7ldc"]
+[ext_resource type="Texture2D" uid="uid://bvnarlscg1s24" path="res://Visuals/asteroid2.png" id="3_yjroo"]
+[ext_resource type="Texture2D" uid="uid://buesn42uob5yp" path="res://Visuals/comet1.png" id="4_pr443"]
+[ext_resource type="Texture2D" uid="uid://dcfe2a0mqn8h1" path="res://Visuals/comet2.png" id="5_p5nn3"]
+[ext_resource type="Script" path="res://Scripts/shape.gd" id="6_b1yiw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g4w77"]
+radius = 12.2066
+
+[node name="obstacle" type="Area2D"]
+
+[node name="visual" type="Sprite2D" parent="."]
+texture = ExtResource("4_pr443")
+script = ExtResource("1_5ysnw")
+asteroid1 = ExtResource("2_t7ldc")
+asteroid2 = ExtResource("3_yjroo")
+comet1 = ExtResource("4_pr443")
+comet2 = ExtResource("5_p5nn3")
+
+[node name="front effect" type="Sprite2D" parent="."]
+
+[node name="shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_g4w77")
+script = ExtResource("6_b1yiw")
